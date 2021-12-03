@@ -1,12 +1,14 @@
 const { updateTrigger } = require("../Controllers/TriggerController");
 
 const modifytrigger = async ({ message, params }) => {
-  const { 0: triggerName, 1: newTriggerJSON } = params.join(" ").split(">");
+  const { 0: triggerName, 1: newTriggerJSON } = params.join(" ").split("-");
 
-  const { trigger, response } = JSON.parse(newTriggerJSON);
+  const { trigger, response } = JSON.parse(newTriggerJSON.trim());
+
   const newTrigger = {};
-  if (trigger) newTrigger.trigger = trigger;
-  if (response) newTrigger.response = response;
+
+  if (trigger != undefined) newTrigger.trigger = trigger;
+  if (response != undefined) newTrigger.response = response;
 
   const updatedTrigger = await updateTrigger(triggerName.trim(), {
     $set: { ...newTrigger },
